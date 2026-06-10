@@ -39,23 +39,6 @@ class ReviewType extends AbstractType
                 'class' => 'form-control',
             ],
         ])
-
-        ->add('created_at', null, [
-            'label' => 'Létrehozva',
-            'widget' => 'single_text',
-            'attr' => [
-                'class' => 'form-control',
-            ],
-        ])
-
-        ->add('updated_at', null, [
-            'label' => 'Frissítve',
-            'widget' => 'single_text',
-            'attr' => [
-                'class' => 'form-control',
-            ],
-        ])
-
         ->add('company', EntityType::class, [
             'class' => Company::class,
             'choice_label' => 'name',
