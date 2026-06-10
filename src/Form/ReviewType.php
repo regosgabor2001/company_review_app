@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\Company;
 use App\Entity\Review;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,20 +16,55 @@ class ReviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('rating')
-            ->add('review_text')
-            ->add('author_email')
-            ->add('created_at', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('updated_at', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('company', EntityType::class, [
-                'class' => Company::class,
-                'choice_label' => 'id',
-            ])
-        ;
+        ->add('rating', IntegerType::class, [
+            'label' => 'Értékelés (1-5)',
+            'attr' => [
+                'class' => 'form-control',
+                'min' => 1,
+                'max' => 5,
+                'step' => 1,
+            ],
+        ])
+
+        ->add('review_text', null, [
+            'label' => 'Vélemény',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+
+        ->add('author_email', EmailType::class, [
+            'label' => 'Email cím',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+
+        ->add('created_at', null, [
+            'label' => 'Létrehozva',
+            'widget' => 'single_text',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+
+        ->add('updated_at', null, [
+            'label' => 'Frissítve',
+            'widget' => 'single_text',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+
+        ->add('company', EntityType::class, [
+            'class' => Company::class,
+            'choice_label' => 'name',
+            'placeholder' => 'Válassz céget',
+            'label' => 'Cég',
+            'attr' => [
+                'class' => 'form-select',
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -16,6 +16,42 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
+    public function findPaginatedWithSearchAndSort(int $page, int $limit, ?string $search, string $sort)
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->leftJoin('r.company', 'c')
+            ->addSelect('c');
+
+        if ($search) {
+            $qb->andWhere('c.name LIKE :search')
+            ->setParameter('search', '%' . $search . '%');
+        }
+
+        $order = in_array($sort, ['asc', 'desc']) ? strtoupper($sort) : 'DESC';
+
+        $qb->orderBy('r.rating', $order);
+
+        return $qb
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countWithSearch(?string $search)
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->select('COUNT(r.id)')
+            ->leftJoin('r.company', 'c');
+
+        if ($search) {
+            $qb->andWhere('c.name LIKE :search')
+            ->setParameter('search', '%' . $search . '%');
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
     //    /**
     //     * @return Review[] Returns an array of Review objects
     //     */

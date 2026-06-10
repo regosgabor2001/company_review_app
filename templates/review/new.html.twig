@@ -1,11 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Review{% endblock %}
+{% block title %}Új vélemény{% endblock %}
 
 {% block body %}
-    <h1>Create new Review</h1>
+<div class="container py-5">
 
-    {{ include('review/_form.html.twig') }}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Új vélemény létrehozása</h1>
 
-    <a href="{{ path('app_review_index') }}">back to list</a>
+        <a href="{{ path('app_review_index') }}" class="btn btn-outline-secondary">
+            ← Vissza a listához
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            {{ include('review/_form.html.twig') }}
+
+        </div>
+    </div>
+
+</div>
 {% endblock %}

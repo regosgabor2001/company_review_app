@@ -1,4 +1,63 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% extends 'base.html.twig' %}
+
+{% block title %}Új vélemény{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Új vélemény</h1>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            {{ form_start(form) }}
+
+            <div class="mb-3">
+                {{ form_label(form.company, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.company, {'attr': {'class': 'form-select'}}) }}
+                {{ form_errors(form.company) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.rating, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.rating, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.rating) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.review_text, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.review_text, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+                {{ form_errors(form.review_text) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.author_email, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.author_email, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.author_email) }}
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.created_at, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.created_at, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.updated_at, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.updated_at, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <button class="btn btn-primary w-100">
+                {{ button_label|default('Mentés') }}
+            </button>
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

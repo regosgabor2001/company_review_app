@@ -1,3 +1,15 @@
 body {
     background-color: skyblue;
 }
+
+.review-text {
+    transition: all 0.3s ease;
+    white-space: pre-wrap;
+}
+
+.review-text.clamped {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

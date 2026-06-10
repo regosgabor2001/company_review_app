@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Review;
 use App\Form\ReviewType;
 use App\Repository\ReviewRepository;
+use App\Repository\CompanyRepository;
+use App\Entity\Company;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +17,22 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ReviewController extends AbstractController
 {
     #[Route(name: 'app_review_index', methods: ['GET'])]
-    public function index(ReviewRepository $reviewRepository): Response
+    public function index(Request $request, ReviewRepository $reviewRepository): Response
     {
+        $page = max(1, $request->query->getInt('page', 1));
+        $limit = 10;
+        $search = $request->query->get('search');
+        $sort = $request->query->get('sort', 'desc'); // default: legjobb felül
+
+        $reviews = $reviewRepository->findPaginatedWithSearchAndSort($page, $limit, $search, $sort);
+        $total = $reviewRepository->countWithSearch($search);
+
         return $this->render('review/index.html.twig', [
-            'reviews' => $reviewRepository->findAll(),
+            'reviews' => $reviews,
+            'page' => $page,
+            'totalPages' => ceil($total / $limit),
+            'search' => $search,
+            'sort' => $sort,
         ]);
     }
 
