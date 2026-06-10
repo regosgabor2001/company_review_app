@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ReviewRepository;
+use App\Entity\Company;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,8 +16,9 @@ class Review
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $company_name = null;
+    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'review')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Company $company = null;
 
     #[ORM\Column]
     private ?int $rating = null;
@@ -38,14 +40,14 @@ class Review
         return $this->id;
     }
 
-    public function getCompanyName(): ?string
+    public function getCompany(): ?Company
     {
-        return $this->company_name;
+        return $this->company;
     }
 
-    public function setCompanyName(string $company_name): static
+    public function setCompany(?Company $company): static
     {
-        $this->company_name = $company_name;
+        $this->company = $company;
 
         return $this;
     }
