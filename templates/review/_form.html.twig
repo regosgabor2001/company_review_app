@@ -14,45 +14,39 @@
 
             {{ form_start(form) }}
 
-            <div class="mb-3">
-                {{ form_label(form.company, null, {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.company, {'attr': {'class': 'form-select'}}) }}
-                {{ form_errors(form.company) }}
-            </div>
+            <div class="row g-3">
 
-            <div class="mb-3">
-                {{ form_label(form.rating, null, {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.rating, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.rating) }}
-            </div>
-
-            <div class="mb-3">
-                {{ form_label(form.review_text, null, {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.review_text, {'attr': {'class': 'form-control', 'rows': 5}}) }}
-                {{ form_errors(form.review_text) }}
-            </div>
-
-            <div class="mb-3">
-                {{ form_label(form.author_email, null, {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.author_email, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.author_email) }}
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    {{ form_label(form.created_at, null, {'label_attr': {'class': 'form-label'}}) }}
-                    {{ form_widget(form.created_at, {'attr': {'class': 'form-control'}}) }}
+                <div class="col-12">
+                    {{ form_label(form.company, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.company, {'attr': {'class': 'form-select'}}) }}
+                    {{ form_errors(form.company) }}
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    {{ form_label(form.updated_at, null, {'label_attr': {'class': 'form-label'}}) }}
-                    {{ form_widget(form.updated_at, {'attr': {'class': 'form-control'}}) }}
+                <div class="col-12 col-md-4">
+                    {{ form_label(form.rating, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.rating, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.rating) }}
                 </div>
-            </div>
 
-            <button class="btn btn-primary w-100">
-                {{ button_label|default('Mentés') }}
-            </button>
+                <div class="col-12 col-md-8">
+                    {{ form_label(form.author_email, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.author_email, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.author_email) }}
+                </div>
+
+                <div class="col-12">
+                    {{ form_label(form.review_text, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.review_text, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+                    {{ form_errors(form.review_text) }}
+                </div>
+
+                <div class="col-12">
+                    <button class="btn btn-primary w-100 w-md-auto">
+                        {{ button_label|default('Mentés') }}
+                    </button>
+                </div>
+
+            </div>
 
             {{ form_end(form) }}
 
