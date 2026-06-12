@@ -20,16 +20,25 @@ class CompanyRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->select(
-                'c.id',
-                'c.name',
+                'c.id AS companyId',
+                'c.name AS companyName',
                 'COUNT(r.id) AS reviewCount',
                 'AVG(r.rating) AS averageRating'
             )
-            ->leftJoin('c.review', 'r')
+            ->join('c.review', 'r')
             ->groupBy('c.id')
             ->orderBy('averageRating', 'DESC')
             ->getQuery()
             ->getArrayResult();
+    }
+
+    public function findAllWithReviews(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.review', 'r')
+            ->addSelect('r')
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**

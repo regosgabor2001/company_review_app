@@ -4,6 +4,7 @@ namespace App\Scheduler;
 
 use App\Service\CompanyReviewAiService;
 use App\Repository\CompanyRepository;
+use App\Message\GetSetCompanyAiReviewMessage;
 use Symfony\Component\Scheduler\Attribute\AsSchedule;
 use Symfony\Component\Scheduler\RecurringMessage;
 use Symfony\Component\Scheduler\Schedule;
@@ -21,7 +22,7 @@ final class CompanyAiReviewSchedule implements ScheduleProviderInterface
     {
         return (new Schedule())
             ->add(
-                RecurringMessage::every('1 day', new GetSetCompanyAiReviewMessage(CompanyRepository::findAllWithReviews()))
+                RecurringMessage::every('1 minute', new GetSetCompanyAiReviewMessage())
             )
             ->stateful($this->cache);
     }
