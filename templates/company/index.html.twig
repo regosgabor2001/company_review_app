@@ -13,7 +13,7 @@
             <div class="d-flex justify-content-between align-items-start">
                 <div>
                     <h5 class="mb-1">
-                        {{ company.name }}
+                        {{ company.companyName }}
                     </h5>
                 </div>
 
@@ -29,26 +29,17 @@
 
             <hr>
 
-            {#{% set isLong = review.reviewText|length > 150 %}
+            {% set isLong = company.reviewSummary|length > 150 %}
 
-            <p class="review-text {% if isLong %}clamped{% endif %}" id="review{{ review.id }}">
-                {{ review.reviewText }}
+            <p class="review-text {% if isLong %}clamped{% endif %}" id="review{{ company.id }}">
+                {{ company.reviewSummary }}
             </p>
 
             {% if isLong %}
-            <a href="javascript:void(0)" class="btn btn-link p-0 toggle-review" data-target="review{{ review.id }}">
+            <a href="javascript:void(0)" class="btn btn-link p-0 toggle-review" data-target="review{{ company.id }}">
                 Teljes szöveg
             </a>
             {% endif %}
-
-            <div class="d-flex justify-content-between text-muted small">
-                <div>
-                    Létrehozva: {{ review.createdAt ? review.createdAt|date('Y-m-d H:i') : '-' }}
-                </div>
-                <div>
-                    Frissítve: {{ review.updatedAt ? review.updatedAt|date('Y-m-d H:i') : '-' }}
-                </div>
-            </div>#}
 
         </div>
     </div>
@@ -57,32 +48,6 @@
         Még nincsenek vélemények.
     </div>
     {% endfor %}
-
-    {#<nav class="mt-4">
-        <ul class="pagination justify-content-center">
-
-            <li class="page-item {% if page <= 1 %}disabled{% endif %}">
-                <a class="page-link" href="?page={{ page - 1 }}&search={{ search }}&sort={{ sort }}">
-                    Előző
-                </a>
-            </li>
-
-            {% for i in 1..totalPages %}
-            <li class="page-item {% if i == page %}active{% endif %}">
-                <a class="page-link" href="?page={{ i }}&search={{ search }}&sort={{ sort }}">
-                    {{ i }}
-                </a>
-            </li>
-            {% endfor %}
-
-            <li class="page-item {% if page >= totalPages %}disabled{% endif %}">
-                <a class="page-link" href="?page={{ page + 1 }}&search={{ search }}&sort={{ sort }}">
-                    Következő
-                </a>
-            </li>
-
-        </ul>
-    </nav>#}
 
 </div>
 {% endblock %}

@@ -14,6 +14,7 @@ final class CompanyController extends AbstractController
     public function index(CompanyRepository $companyRepository): Response
     {
         $companyStatistics = $companyRepository->getCompanyStatistics();
+        
 
         return $this->render('company/index.html.twig', [
             'companies' => $companyStatistics,

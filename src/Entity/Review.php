@@ -6,6 +6,8 @@ use App\Repository\ReviewRepository;
 use App\Entity\Company;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -127,5 +129,12 @@ class Review
     public function setUpdatedAtValue(): void
     {
         $this->updated_at = new \DateTimeImmutable();
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata): void
+    {
+        $metadata->addPropertyConstraint('rating', new Assert\NotBlank(), new Assert\Range(['min' => 1, 'max' => 5]));
+        $metadata->addPropertyConstraint('review_text', new Assert\NotBlank());
+        $metadata->addPropertyConstraint('author_email', new Assert\NotBlank(), new Assert\Email());
     }
 }

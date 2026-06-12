@@ -22,6 +22,7 @@ class CompanyRepository extends ServiceEntityRepository
             ->select(
                 'c.id AS companyId',
                 'c.name AS companyName',
+                'c.reviewSummary',
                 'COUNT(r.id) AS reviewCount',
                 'AVG(r.rating) AS averageRating'
             )
