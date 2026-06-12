@@ -16,6 +16,22 @@ class CompanyRepository extends ServiceEntityRepository
         parent::__construct($registry, Company::class);
     }
 
+    public function getCompanyStatistics(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->select(
+                'c.id',
+                'c.name',
+                'COUNT(r.id) AS reviewCount',
+                'AVG(r.rating) AS averageRating'
+            )
+            ->leftJoin('c.review', 'r')
+            ->groupBy('c.id')
+            ->orderBy('averageRating', 'DESC')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
     //    /**
     //     * @return Company[] Returns an array of Company objects
     //     */
