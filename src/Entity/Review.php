@@ -23,11 +23,20 @@ class Review
     private ?Company $company = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Range(
+        min: 1, 
+        max: 5, 
+        notInRangeMessage: 'The rating value must be between 1 and 5.'
+    )]
     private ?int $rating = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $review_text = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Email(message: 'This value is not a valid email address.')]
     #[ORM\Column(length: 255)]
     private ?string $author_email = null;
 
@@ -129,12 +138,5 @@ class Review
     public function setUpdatedAtValue(): void
     {
         $this->updated_at = new \DateTimeImmutable();
-    }
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata): void
-    {
-        $metadata->addPropertyConstraint('rating', new Assert\NotBlank(), new Assert\Range(['min' => 1, 'max' => 5]));
-        $metadata->addPropertyConstraint('review_text', new Assert\NotBlank());
-        $metadata->addPropertyConstraint('author_email', new Assert\NotBlank(), new Assert\Email());
     }
 }

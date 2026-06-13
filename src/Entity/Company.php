@@ -22,6 +22,12 @@ class Company
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $reviewSummary = null;
 
+    #[ORM\Column]
+    private ?int $oldReviewCount = 0;
+
+    #[ORM\Column]
+    private ?int $newReviewCount = 0;
+
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Review::class)]
     private Collection $review;
 
@@ -60,6 +66,30 @@ class Company
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getOldReviewCount(): ?int
+    {
+        return $this->oldReviewCount;
+    }
+
+    public function setOldReviewCount(int $oldReviewCount): static
+    {
+        $this->oldReviewCount = $oldReviewCount;
+
+        return $this;
+    }
+
+    public function getNewReviewCount(): ?int
+    {
+        return $this->newReviewCount;
+    }
+
+    public function setNewReviewCount(int $newReviewCount): static
+    {
+        $this->newReviewCount = $newReviewCount;
 
         return $this;
     }
