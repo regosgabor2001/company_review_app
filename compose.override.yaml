@@ -17,7 +17,7 @@ services:
     volumes:
       - database_data:/var/lib/mysql:rw
     ports:
-      - "3307:3307"
+      - "3307:3306"
 ###< doctrine/doctrine-bundle ###
 
 ###> symfony/mailer ###

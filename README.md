@@ -2,6 +2,15 @@
 
 A small Symfony app that collects company reviews and generates AI summaries.
 
+**Features & Stack**
+- **Framework:** Symfony 7.4 & PHP 8.2+
+- **Database:** MySQL 8.0 & Doctrine ORM
+- **Frontend:** Twig & Bootstrap
+- **Testing:** PHPUnit (Unit & Functional tests)
+- **Extra Feature:** Automated AI summary generation for companies via Symfony Scheduler.
+
+---
+
 **Requirements**
 - **Docker & Compose:** Install Docker Desktop and ensure `docker compose` is available.
 
