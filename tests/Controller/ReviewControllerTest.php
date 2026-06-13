@@ -2,147 +2,85 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\Company;
 use App\Entity\Review;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Doctrine\ORM\EntityManagerInterface;
 
-final class ReviewControllerTest extends WebTestCase
+class ReviewControllerTest extends WebTestCase
 {
-    private KernelBrowser $client;
-    private EntityManagerInterface $manager;
-
-    /** @var EntityRepository<Review> */
-    private EntityRepository $reviewRepository;
-    private string $path = '/review/';
+    private EntityManagerInterface $entityManager;
+    private $client;
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->client = static::createClient();
-        $this->manager = static::getContainer()->get('doctrine')->getManager();
-        $this->reviewRepository = $this->manager->getRepository(Review::class);
+        
+        $this->entityManager = static::getContainer()
+            ->get('doctrine')
+            ->getManager();
+    }
 
-        foreach ($this->reviewRepository->findAll() as $object) {
-            $this->manager->remove($object);
+    protected function tearDown(): void
+    {
+        if ($this->entityManager) {
+            $this->entityManager->close();
         }
-
-        $this->manager->flush();
+        parent::tearDown();
     }
 
-    public function testIndex(): void
+    public function testCreateReviewSuccessfully(): void
     {
-        $this->client->followRedirects();
-        $crawler = $this->client->request('GET', $this->path);
+        $company = new Company();
+        $company->setName('Teszt Cég Kft.');
+        $this->entityManager->persist($company);
+        $this->entityManager->flush();
 
-        self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('Review index');
+        $crawler = $this->client->request('GET', '/new');
+        $this->assertResponseIsSuccessful();
 
-        // Use the $crawler to perform additional assertions e.g.
-        // self::assertSame('Some text on the page', $crawler->filter('.p')->first()->text());
-    }
-
-    public function testNew(): void
-    {
-        $this->client->request('GET', sprintf('%snew', $this->path));
-
-        self::assertResponseStatusCodeSame(200);
-
-        $this->client->submitForm('Save', [
-            'review[rating]' => 'Testing',
-            'review[review_text]' => 'Testing',
-            'review[author_email]' => 'Testing',
-            'review[created_at]' => 'Testing',
-            'review[updated_at]' => 'Testing',
-            'review[company]' => 'Testing',
+        $form = $crawler->selectButton('Mentés')->form([
+            'review[company]' => $company->getId(),
+            'review[author_email]' => 'user@example.com',
+            'review[rating]' => 5,
+            'review[review_text]' => 'Ez egy fantasztikus cég, minden szuper volt!',
         ]);
 
-        self::assertResponseRedirects('/review');
+        $this->client->submit($form);
 
-        self::assertSame(1, $this->reviewRepository->count([]));
+        $this->assertResponseRedirects('/', 303);
 
-        $this->markTestIncomplete('This test was generated');
+        $reviewRepository = $this->entityManager->getRepository(Review::class);
+        $savedReview = $reviewRepository->findOneBy(['author_email' => 'user@example.com']);
+
+        $this->assertNotNull($savedReview);
+        $this->assertSame(5, $savedReview->getRating());
+        $this->assertSame('Ez egy fantasztikus cég, minden szuper volt!', $savedReview->getReviewText());
     }
 
-    public function testShow(): void
+    public function testCreateReviewValidationError(): void
     {
-        $fixture = new Review();
-        $fixture->setRating('My Title');
-        $fixture->setReviewText('My Title');
-        $fixture->setAuthorEmail('My Title');
-        $fixture->setCreatedAt('My Title');
-        $fixture->setUpdatedAt('My Title');
-        $fixture->setCompany('My Title');
+        $company = new Company();
+        $company->setName('Validáló Teszt Cég');
+        $this->entityManager->persist($company);
+        $this->entityManager->flush();
 
-        $this->manager->persist($fixture);
-        $this->manager->flush();
+        $crawler = $this->client->request('GET', '/new');
+        $this->assertResponseIsSuccessful();
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+        $form = $crawler->selectButton('Mentés')->form();
 
-        self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('Review');
+        $form['review[company]']->select($company->getId());
+        $form['review[rating]'] = 10;
+        $form['review[author_email]'] = 'nem-egy-email';
+        $form['review[review_text]'] = 'Abc';
 
-        // Use assertions to check that the properties are properly displayed.
-        $this->markTestIncomplete('This test was generated');
-    }
+        $crawler = $this->client->submit($form);
 
-    public function testEdit(): void
-    {
-        $fixture = new Review();
-        $fixture->setRating('Value');
-        $fixture->setReviewText('Value');
-        $fixture->setAuthorEmail('Value');
-        $fixture->setCreatedAt('Value');
-        $fixture->setUpdatedAt('Value');
-        $fixture->setCompany('Value');
-
-        $this->manager->persist($fixture);
-        $this->manager->flush();
-
-        $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
-
-        $this->client->submitForm('Update', [
-            'review[rating]' => 'Something New',
-            'review[review_text]' => 'Something New',
-            'review[author_email]' => 'Something New',
-            'review[created_at]' => 'Something New',
-            'review[updated_at]' => 'Something New',
-            'review[company]' => 'Something New',
-        ]);
-
-        self::assertResponseRedirects('/review');
-
-        $fixture = $this->reviewRepository->findAll();
-
-        self::assertSame('Something New', $fixture[0]->getRating());
-        self::assertSame('Something New', $fixture[0]->getReviewText());
-        self::assertSame('Something New', $fixture[0]->getAuthorEmail());
-        self::assertSame('Something New', $fixture[0]->getCreatedAt());
-        self::assertSame('Something New', $fixture[0]->getUpdatedAt());
-        self::assertSame('Something New', $fixture[0]->getCompany());
-
-        $this->markTestIncomplete('This test was generated');
-    }
-
-    public function testRemove(): void
-    {
-        $fixture = new Review();
-        $fixture->setRating('Value');
-        $fixture->setReviewText('Value');
-        $fixture->setAuthorEmail('Value');
-        $fixture->setCreatedAt('Value');
-        $fixture->setUpdatedAt('Value');
-        $fixture->setCompany('Value');
-
-        $this->manager->persist($fixture);
-        $this->manager->flush();
-
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
-        $this->client->submitForm('Delete');
-
-        self::assertResponseRedirects('/review');
-        self::assertSame(0, $this->reviewRepository->count([]));
-
-        $this->markTestIncomplete('This test was generated');
+        $this->assertResponseStatusCodeSame(422);
+        
+        $responseContent = $this->client->getResponse()->getContent();
+        $this->assertStringContainsString('This value is not a valid email address.', $responseContent);
     }
 }

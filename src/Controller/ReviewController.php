@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ReviewController extends AbstractController
 {
@@ -21,7 +22,11 @@ final class ReviewController extends AbstractController
         $page = max(1, $request->query->getInt('page', 1));
         $limit = 10;
         $search = $request->query->get('search');
-        $sort = $request->query->get('sort', 'desc'); // default: legjobb felül
+        
+        $sort = strtolower($request->query->get('sort', 'desc'));
+        if (!in_array($sort, ['asc', 'desc'], true)) {
+            $sort = 'desc';
+        }
 
         $reviews = $reviewRepository->findPaginatedWithSearchAndSort($page, $limit, $search, $sort);
         $total = $reviewRepository->countWithSearch($search);
@@ -38,11 +43,13 @@ final class ReviewController extends AbstractController
     #[Route('/new', name: 'app_review_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        
         $review = new Review();
         $form = $this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($review);
             $entityManager->flush();
 
@@ -63,7 +70,7 @@ final class ReviewController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_review_edit', methods: ['GET', 'POST'])]
+    /*#[Route('/{id}/edit', name: 'app_review_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Review $review, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ReviewType::class, $review);
@@ -90,5 +97,5 @@ final class ReviewController extends AbstractController
         }
 
         return $this->redirectToRoute('app_review_index', [], Response::HTTP_SEE_OTHER);
-    }
+    }*/
 }
