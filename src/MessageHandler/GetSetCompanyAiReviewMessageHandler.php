@@ -27,8 +27,22 @@ final class GetSetCompanyAiReviewMessageHandler
             }
 
             $reviews = $company->getReviews()->toArray();
+            $newCount = count($reviews);
+            $oldCount = $company->getOldReviewCount();
 
-            $summary = $this->aiService->generateSummary($reviews);
+            $company->setNewReviewCount($newCount);
+
+            if ($newCount === $oldCount) {
+                continue;
+            }
+
+            $company->setOldReviewCount($newCount);
+
+            $reviewsData = array_map(function($review) {
+                return $review->getReviewText();
+            }, $reviews);
+
+            $summary = $this->aiService->generateSummary($reviewsData);
 
             $company->setReviewSummary($summary);
         }
