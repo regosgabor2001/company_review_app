@@ -14,8 +14,17 @@ A small Symfony 7.4 application that collects company reviews, displays aggregat
 **Requirements**
 - **Docker & Compose:** Install Docker Desktop and ensure `docker compose` is available.
 
+**Install PHP Dependencies (Composer):**
+- Execute composer install inside the app container to download all required packages: `docker compose exec app composer install`
+
 **Start (Docker)**
 - **Build & run:** `docker compose up -d --build`
+
+**Configure Environment Variables**
+- The AI summary feature requires a Gemini API key. Create a .env.local file in the root directory (if it doesn't exist yet) and add your API key:
+
+    # .env.local
+    GEMINI_API_KEY="your_actual_gemini_api_key_here"
 
 **Start Scheduler**
 - This project uses the Symfony Scheduler. The schedule provider for company AI reviews is named `ai_company_summary`.
@@ -53,13 +62,13 @@ Once the containers are up and healthy, you can access the following services:
 
 **Work Log**
 
-| Task (Feladat megnevezése) | Estimated Time (Becsült idő) | Actual Time (Tényleges idő) |
-| :--- | :---: | :---: |
-| Docker environment setup & Network/Port configuration | 1:00 h | 1:15 h |
-| Doctrine Database Model (Review, Company) & Migrations | 0:45 h | 0:30 h |
-| Symfony Form (ReviewType), CSRF protection & Validation rules | 0:45 h | 0:45 h |
-| Homepage review listing (Pagination, Search, Sorting) & Twig UI | 1:15 h | 1:30 h |
-| Aggregated company statistics logic & `/companies` route | 1:00 h | 1:00 h |
-| Writing Unit & Functional/Integration Tests (PHPUnit) | 1:15 h | 1:15 h |
-| **Bonus:** Symfony Scheduler + Messenger + AI service integration | 1:30 h | 1:45 h |
-| **Total Work Time:** | **7:30 h** | **8:00 h** |
+| Task | Time |
+| :--- | :---: |
+| Docker environment setup & Network/Port configuration | 1:15 h |
+| Doctrine Database Model (Review, Company) & Migrations | 0:45 h |
+| Symfony Form (ReviewType), CSRF protection & Validation rules | 0:45 h |
+| Homepage review listing (Pagination, Search, Sorting) & Twig UI | 1:30 h |
+| Aggregated company statistics logic & `/companies` route | 1:00 h |
+| Writing Unit & Functional/Integration Tests (PHPUnit) | 1:15 h |
+| **Bonus:** Symfony Scheduler + Messenger + AI service integration | 1:45 h |
+| **Total Work Time:** | **8:15 h** |
