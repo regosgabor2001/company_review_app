@@ -102,14 +102,12 @@
     <nav class="mt-4">
         <ul class="pagination justify-content-center">
 
-            {# Előző #}
             <li class="page-item {% if page <= 1 %}disabled{% endif %}">
                 <a class="page-link" href="?page={{ page - 1 }}&search={{ search }}&sort={{ sort }}">
                     Előző
                 </a>
             </li>
 
-            {# Oldalszámok #}
             {% for i in 1..totalPages %}
             <li class="page-item {% if i == page %}active{% endif %}">
                 <a class="page-link" href="?page={{ i }}&search={{ search }}&sort={{ sort }}">
@@ -118,7 +116,6 @@
             </li>
             {% endfor %}
 
-            {# Következő #}
             <li class="page-item {% if page >= totalPages %}disabled{% endif %}">
                 <a class="page-link" href="?page={{ page + 1 }}&search={{ search }}&sort={{ sort }}">
                     Következő

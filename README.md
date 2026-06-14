@@ -68,7 +68,6 @@ Once the containers are up and healthy, you can access the following services:
 | Doctrine Database Model (Review, Company) & Migrations | 0:45 h |
 | Symfony Form (ReviewType), CSRF protection & Validation rules | 0:45 h |
 | Homepage review listing (Pagination, Search, Sorting) & Twig UI | 1:30 h |
-| Aggregated company statistics logic & `/companies` route | 1:00 h |
 | Writing Unit & Functional/Integration Tests (PHPUnit) | 1:15 h |
 | **Bonus:** Symfony Scheduler + Messenger + AI service integration | 1:45 h |
-| **Total Work Time:** | **8:15 h** |
+| **Total Work Time:** | **7:15 h** |
