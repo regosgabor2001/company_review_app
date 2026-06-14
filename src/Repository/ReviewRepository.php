@@ -16,6 +16,16 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
+    /**
+     * Return a page of reviews filtered by company name and ordered by rating.
+     *
+     * @param int $page   Current page number (1-based)
+     * @param int $limit  Maximum number of reviews per page
+     * @param string|null $search Search term for company name
+     * @param string $sort  Sort direction: "asc" or "desc"
+     *
+     * @return Review[]
+     */
     public function findPaginatedWithSearchAndSort(int $page, int $limit, ?string $search, string $sort)
     {
         $qb = $this->createQueryBuilder('r')
@@ -23,10 +33,12 @@ class ReviewRepository extends ServiceEntityRepository
             ->addSelect('c');
 
         if ($search) {
+            // Filter reviews by company name using a LIKE search.
             $qb->andWhere('c.name LIKE :search')
-            ->setParameter('search', '%' . $search . '%');
+                ->setParameter('search', '%' . $search . '%');
         }
 
+        // Only allow a valid sort direction, default to DESC.
         $order = in_array($sort, ['asc', 'desc']) ? strtoupper($sort) : 'DESC';
 
         $qb->orderBy('r.rating', $order);
@@ -38,6 +50,13 @@ class ReviewRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Count reviews matching the optional company search term.
+     *
+     * @param string|null $search Search term for company name
+     *
+     * @return int
+     */
     public function countWithSearch(?string $search)
     {
         $qb = $this->createQueryBuilder('r')
@@ -46,7 +65,7 @@ class ReviewRepository extends ServiceEntityRepository
 
         if ($search) {
             $qb->andWhere('c.name LIKE :search')
-            ->setParameter('search', '%' . $search . '%');
+                ->setParameter('search', '%' . $search . '%');
         }
 
         return (int) $qb->getQuery()->getSingleScalarResult();
