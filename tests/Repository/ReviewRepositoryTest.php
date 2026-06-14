@@ -2,11 +2,11 @@
 
 namespace App\Tests\Repository;
 
-use App\Entity\Review;
 use App\Entity\Company;
+use App\Entity\Review;
 use App\Repository\ReviewRepository;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ReviewRepositoryTest extends KernelTestCase
 {

@@ -2,17 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Company;
 use App\Entity\Review;
 use App\Form\ReviewType;
-use App\Repository\ReviewRepository;
 use App\Repository\CompanyRepository;
-use App\Entity\Company;
+use App\Repository\ReviewRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Main controller handling actions for viewing, creating, and analyzing company reviews.
@@ -30,7 +29,7 @@ final class ReviewController extends AbstractController
         $page = max(1, $request->query->getInt('page', 1));
         $limit = 10;
         $search = $request->query->get('search');
-        
+
         // Normalize sort direction and enforce a valid value (default to 'desc')
         $sort = strtolower($request->query->get('sort', 'desc'));
         if (!in_array($sort, ['asc', 'desc'], true)) {

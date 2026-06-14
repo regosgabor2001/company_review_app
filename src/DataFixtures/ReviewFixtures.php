@@ -53,16 +53,14 @@ class ReviewFixtures extends Fixture implements DependentFixtureInterface
             ->findAll();
 
         foreach ($companies as $company) {
-
             $reviewCount = $faker->numberBetween(3, 8);
 
-            for ($i = 0; $i < $reviewCount; $i++) {
-
+            for ($i = 0; $i < $reviewCount; ++$i) {
                 $rating = $faker->numberBetween(1, 5);
 
                 if ($rating >= 4) {
                     $reviewText = $faker->randomElement($positiveReviews);
-                } elseif ($rating === 3) {
+                } elseif (3 === $rating) {
                     $reviewText = $faker->randomElement($neutralReviews);
                 } else {
                     $reviewText = $faker->randomElement($negativeReviews);

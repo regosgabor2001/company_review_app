@@ -2,8 +2,6 @@
 
 namespace App\Scheduler;
 
-use App\Service\CompanyReviewAiService;
-use App\Repository\CompanyRepository;
 use App\Message\GetSetCompanyAiReviewMessage;
 use Symfony\Component\Scheduler\Attribute\AsSchedule;
 use Symfony\Component\Scheduler\RecurringMessage;
@@ -15,8 +13,9 @@ use Symfony\Contracts\Cache\CacheInterface;
 final class CompanyAiReviewSchedule implements ScheduleProviderInterface
 {
     public function __construct(
-        private CacheInterface $cache
-    ) {}
+        private CacheInterface $cache,
+    ) {
+    }
 
     public function getSchedule(): Schedule
     {

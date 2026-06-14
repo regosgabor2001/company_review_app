@@ -3,8 +3,8 @@
 namespace App\MessageHandler;
 
 use App\Message\GetSetCompanyAiReviewMessage;
-use App\Service\CompanyReviewAiService;
 use App\Repository\CompanyRepository;
+use App\Service\CompanyReviewAiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -21,8 +21,9 @@ final class GetSetCompanyAiReviewMessageHandler
     public function __construct(
         private CompanyReviewAiService $aiService,
         private CompanyRepository $companyRepository,
-        private EntityManagerInterface $em
-    ) {}
+        private EntityManagerInterface $em,
+    ) {
+    }
 
     /**
      * Execution point invoked when a GetSetCompanyAiReviewMessage is consumed from the queue.
@@ -55,7 +56,7 @@ final class GetSetCompanyAiReviewMessageHandler
             $company->setOldReviewCount($newCount);
 
             // Extract only the text payloads from the review entities for the AI prompt context
-            $reviewsData = array_map(function($review) {
+            $reviewsData = array_map(function ($review) {
                 return $review->getReviewText();
             }, $reviews);
 

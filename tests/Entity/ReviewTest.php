@@ -2,8 +2,8 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\Review;
 use App\Entity\Company;
+use App\Entity\Review;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -62,7 +62,7 @@ class ReviewTest extends TestCase
 
         // Ensure that during initial creation, the created and updated timestamps are identical
         $this->assertSame(
-            $review->getCreatedAt()->getTimestamp(), 
+            $review->getCreatedAt()->getTimestamp(),
             $review->getUpdatedAt()->getTimestamp()
         );
     }
@@ -75,7 +75,7 @@ class ReviewTest extends TestCase
     {
         // --- ARRANGE ---
         $review = new Review();
-        
+
         // Mock a specific historical timestamp for both fields
         $pastDate = new \DateTimeImmutable('2026-01-01 10:00:00');
         $review->setCreatedAt($pastDate);
@@ -92,7 +92,7 @@ class ReviewTest extends TestCase
         // Verify that the modification date was successfully updated to a newer timestamp
         $this->assertNotSame($pastDate, $review->getUpdatedAt());
         $this->assertGreaterThan(
-            $pastDate->getTimestamp(), 
+            $pastDate->getTimestamp(),
             $review->getUpdatedAt()->getTimestamp()
         );
     }

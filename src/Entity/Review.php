@@ -3,11 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\ReviewRepository;
-use App\Entity\Company;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -25,8 +23,8 @@ class Review
     #[ORM\Column]
     #[Assert\NotBlank]
     #[Assert\Range(
-        min: 1, 
-        max: 5, 
+        min: 1,
+        max: 5,
         notInRangeMessage: 'The rating value must be between 1 and 5.'
     )]
     private ?int $rating = null;
@@ -126,10 +124,10 @@ class Review
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void
     {
-        if ($this->created_at === null) {
+        if (null === $this->created_at) {
             $this->created_at = new \DateTimeImmutable();
         }
-        if ($this->updated_at === null) {
+        if (null === $this->updated_at) {
             $this->updated_at = new \DateTimeImmutable();
         }
     }

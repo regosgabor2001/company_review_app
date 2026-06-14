@@ -3,7 +3,7 @@
 A small Symfony 7.4 application that collects company reviews, displays aggregated statistics, and generates automated AI summaries for companies using the Symfony Scheduler.
 
 **Features & Stack**
-- **Framework:** Symfony 7.4 & PHP 8.2+
+- **Framework:** Symfony 7.4 & PHP 8.4
 - **Database:** MySQL 8.0 & Doctrine ORM
 - **Frontend:** Twig & Bootstrap
 - **Testing:** PHPUnit (Unit & Functional tests)

@@ -19,10 +19,10 @@ class ReviewRepository extends ServiceEntityRepository
     /**
      * Return a page of reviews filtered by company name and ordered by rating.
      *
-     * @param int $page   Current page number (1-based)
-     * @param int $limit  Maximum number of reviews per page
+     * @param int         $page   Current page number (1-based)
+     * @param int         $limit  Maximum number of reviews per page
      * @param string|null $search Search term for company name
-     * @param string $sort  Sort direction: "asc" or "desc"
+     * @param string      $sort   Sort direction: "asc" or "desc"
      *
      * @return Review[]
      */
@@ -35,7 +35,7 @@ class ReviewRepository extends ServiceEntityRepository
         if ($search) {
             // Filter reviews by company name using a LIKE search.
             $qb->andWhere('c.name LIKE :search')
-                ->setParameter('search', '%' . $search . '%');
+                ->setParameter('search', '%'.$search.'%');
         }
 
         // Only allow a valid sort direction, default to DESC.
@@ -65,7 +65,7 @@ class ReviewRepository extends ServiceEntityRepository
 
         if ($search) {
             $qb->andWhere('c.name LIKE :search')
-                ->setParameter('search', '%' . $search . '%');
+                ->setParameter('search', '%'.$search.'%');
         }
 
         return (int) $qb->getQuery()->getSingleScalarResult();

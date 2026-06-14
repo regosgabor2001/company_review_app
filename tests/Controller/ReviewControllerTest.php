@@ -4,8 +4,8 @@ namespace App\Tests\Controller;
 
 use App\Entity\Company;
 use App\Entity\Review;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Functional tests for the Review creation and validation workflows.
@@ -21,10 +21,10 @@ class ReviewControllerTest extends WebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Initialize the HTTP client to simulate browser requests
         $this->client = static::createClient();
-        
+
         // Retrieve the entity manager from the dependency injection container
         $this->entityManager = static::getContainer()
             ->get('doctrine')
@@ -114,7 +114,7 @@ class ReviewControllerTest extends WebTestCase
         // --- ASSERT ---
         // Verify the response returns HTTP 422 Unprocessable Entity (standard form validation failure status)
         $this->assertResponseStatusCodeSame(422);
-        
+
         // Check that the standard Symfony validation error message is rendered on the page
         $responseContent = $this->client->getResponse()->getContent();
         $this->assertStringContainsString('This value is not a valid email address.', $responseContent);
